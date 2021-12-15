@@ -1,0 +1,173 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{titling}
+\newcommand{\subtitle}[1]{%
+  \posttitle{%
+    \par\end{center}
+    \begin{center}\large#1\end{center}
+    \vskip0.5em}%
+}
+
+%------------------------------------------------
+%	Title
+%------------------------------------------------
+
+\title{MEDICAL TEST RECORDS\\ PROPOSAL}
+\subtitle{IST MEIC-A SIRS}
+
+%------------------------------------------------
+%	Author(s)
+%------------------------------------------------
+
+\author{
+	\includegraphics[width=20mm]{Images/1.jpeg} \\
+	António Ferreira  \\
+	84701
+	\and
+	\includegraphics[width=20mm]{Images/3.PNG} \\
+	João Neves \\
+	83405
+	\and
+	\includegraphics[width=20mm]{Images/2.jpeg} \\
+	Bruno Codinha \\
+	90707
+}
+\date{2020 \\ November}
+
+\begin{document}
+
+\maketitle
+
+\pagebreak
+
+%------------------------------------------------
+%	PROBLEM
+%------------------------------------------------
+\section{Problem}
+The system is set to store medical records, which are \textbf{highly sensitive data}.
+While ensuring the \textbf{integrity} of the records and \textbf{availability} to the authorized personnel (both internal and external), the system must guarantee the \textbf{confidentiality} of stored data against both malicious agents and authenticated users who unduly attempt to access information restricted to them. The access control policy defined should be easily reconfigured to different contexts. All aforementioned properties should be true when accessing the system either locally or remotely.
+
+
+\subsection{Requirements}
+\begin{itemize}
+  \item \textbf{Authentication and Non-Repudiation}
+\subitem Data Origin - Ensure that communication between two nodes has not been compromised
+    \subitem Entity - Ensure that each endpoint has not been spoofed
+  \item \textbf{Confidentiality}
+    \subitem Data In Transit - Support integrity and avoid eavesdropping of messages
+    \subitem Data At Rest - Data kept with ACID properties and in a fashion that, in case of an eventual breach, data would be unreadable
+  \item \textbf{Integrity}
+    \subitem Data In Transit - Data over the network can't be modified, to ensure no tampering of messages
+    \subitem Data At Rest - The service should enforce a policy with assurance that modifications by unauthorized users won't occur
+  \item \textbf{Availability}
+    \subitem Reliability - The system shouldn't be victim of neither a brute or DoS attack
+    \subitem Fault tolerance - Due to the limited scope of the project, no solution to fault tolerance was projected
+  \item \textbf{Traceability}
+    \subitem Requests - Every request should be logged for auditing
+    \subitem Errors - Every bad input is logged for further analysis
+
+\end{itemize}
+\subsection{Trust Assumptions}
+\begin{itemize}
+	\item[$\ast$] {\bf Client} is untrusted until user authentication
+	\item[$\ast$] {\bf Key Server} is fully trusted by all parties
+	\item[$\ast$] {\bf CA} is fully trusted by all parties
+	\item[$\ast$] {\bf Laboratories} are fully trusted by the Hospital Server {\bf only after the authentication phase of the secure protocol on 2.4} 
+
+\end{itemize}
+
+
+%------------------------------------------------
+%	SOLUTION
+%------------------------------------------------
+\section{Proposed Solution}
+\subsection{Overview}
+\begin{figure}[!ht]
+	\includegraphics[width=\linewidth]{Images/Topology.png}
+	\caption{Network Topology}
+\end{figure}
+The interaction of the system begins with a {\bf client} authenticating itself, accessing the system through the {\bf Proxy Server}, which acts as a firewall and forwards traffic to the {\bf Key Server} and {\bf Hospital Server}. The {\bf Key Server} acts as an Authenticator. The {\bf Hospital Server}, while providing the logic functionality of the system, manages and enforces the Access Control Logic on XACML. Responses are forwarded through the {\bf Proxy Server} to the client.
+
+\subsection{Deployment}
+
+\begin{itemize}
+\item[$\ast$] {\bf Proxy Server} Packet-filtering firewall that forwards traffic to the Key Server and Hospital Server
+\item[$\ast$] {\bf Hospital Server} Implements the business logic, authentication and access control policies
+\item[$\ast$] {\bf Database} Stores user information and medical records
+\item[$\ast$] {\bf Laboratory} Stores test results and provides an API to fetch them
+\item[$\ast$] {\bf CA} Stores certificates to verify the public key ownership of the previous entities.
+\end{itemize}
+
+
+\subsection{Secure Channels}
+The {\bf Client application} and the {\bf Laboratory application} are shipped with the root certificate of our own deployed CA. To implement {\bf Secure Channels} we will use Java's implementation of gRPC[1] through a SSL/TLS channel. This way, it is guaranteed that all communication channels between clients and the server guarantee confidentiality and integrity. For laboratory and server communication, we are developing a simple security protocol that can be implemented over sockets.
+\subsection{Secure Protocol}
+
+% SEQUENCEDIAGRAM.ORG
+%note over Client,Proxy Server: First Authentication with Hospital Server
+%Client->Proxy Server: login(user,password)
+%Proxy Server->Client:authentication confirmation
+
+%note over Client,Proxy Server: Laboratory Data Request Phase One
+%Client->Proxy Server: Request(testID)
+%Proxy Server->Client:Ticket, LabPublicKey
+
+%note over Client,Laboratory: Laboratory Data Request Phase Two
+%Client->Laboratory: {Request(testID), Ticket, ClientPublicKey}LabPublicKey
+%Laboratory->Client:{Result}ClientPublicKey
+
+
+\begin{itemize}
+\item[$1$] First, the Hospital requests from the Laboratory its Public Key Certificate. 
+\item[$2$] Upon reception, verifies the certificate with the CA 
+\item[$3$] The Secure Protocol is initialised by the Hospital, sending to the Laboratory a request to establish connection, including a random number A
+\item[$4$] The Laboratory replies to the Hospital with B, also a random number
+\item[$5$] Both parties calculate a common secret key with values A and B, following DH principles
+\item[$6$] Every message exchanged between both parties is encrypted with the secret key, and includes nonces
+\item[$7$] Laboratories replies are signed
+\end{itemize}
+
+\begin{figure}[!ht]
+	\includegraphics[width=\linewidth]{Images/Protocol.png}
+	\caption{Protocol Diagram}
+\end{figure}
+
+%------------------------------------------------
+%	PLAN
+%------------------------------------------------
+\newpage
+\section{Plan}
+\subsection{Versions}
+
+\begin{itemize}
+\item[$\ast$] {\bf Basic Version} For the basic version our plan is to implement all the basic components of the project, Client, Lab Server, Hospital Server, Key Server and Database. Also we are going to implement the secure communication system.
+\item[$\ast$] {\bf Intermediate Version} For the intermediate version we are going to implement the authenticity, integrity of the system and the CA.
+\item[$\ast$] {\bf Advanced Version} For the advanced version we propose to do the SQL Injection protection, Proxy Server with the firewall and the XACML.
+\end{itemize}
+
+\subsection{Effort Commitments}
+
+\begin{center}
+\begin{tabular}{ |c|c|c|c| }
+ \hline
+ & António & Bruno & João \\
+ Weeek 1 & Lab Server & Hospital Server & Client \\
+ Week 2 & Communication Protocol & Key Server & Database\\
+ Week 3 & Authentication & Integrity & CA \\
+ Week 4 & SQL Injection Protection / XACML & Proxy Server / XACML & XACML \\
+ \hline
+\end{tabular}
+\end{center}
+
+%------------------------------------------------
+%	REFERENCES
+%------------------------------------------------
+\newpage
+\section{References}
+
+https://tools.ietf.org/html/rfc2753 \\
+https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=xacml#other \\
+https://www.ssl.com/ \\
+
+\end{document}
