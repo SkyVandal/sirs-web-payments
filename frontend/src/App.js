@@ -1,27 +1,24 @@
 import logo from './logo.svg';
 import './App.css';
-import React, { Component } from "react";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Login from './views/auth/Login'; 
+import Signup from './views/auth/Signup';
+import Logout from './views/auth/Logout';
 
-import {Navigation} from "./components/Navigation";
-import {HomePage} from "./components/HomePage";
-import {Contacts} from "./components/Contacts";
-
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      viewCompleted: true,
-    };
-  }
-
-  render() {
-    return (
-        <div>
-            <Navigation />
-            <Contacts />
-        </div>
-    )
-  }
+function App() {
+  return (
+    <div className="App">
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path='/login' element={<Login/>} />
+          <Route path='/signup' element={<Signup/>} />
+          <Route path='/logout' element={<Logout/>} />
+        </Routes>
+      </Router>
+    </div>
+  );
 }
 
 export default App;
