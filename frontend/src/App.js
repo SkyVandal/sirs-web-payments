@@ -16,8 +16,10 @@ class App extends Component {
 
   render() {
     return (
-        <Navigation />,
-        <Contacts />
+        <div>
+            <Navigation />
+            <Contacts />
+        </div>
     )
   }
 }
