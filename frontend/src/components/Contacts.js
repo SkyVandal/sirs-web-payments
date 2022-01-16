@@ -35,7 +35,7 @@ export const Contacts = () => {
                 </div>
             </div>
 
-            <div className="footer-copyright text-center py-3">© 2020 Copyright:
+            <div className="footer-copyright text-center py-3">© 2022 Copyright:
                 <a href="https://brunocodinha.com/"> brunocodinha.com</a>
             </div>
         </footer>
