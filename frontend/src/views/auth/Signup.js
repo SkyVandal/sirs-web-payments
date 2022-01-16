@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 const Signup = () => {
+  const [firstName, setFirst] = useState('');
+  const [lastName, setLast] = useState('');
   const [email, setEmail] = useState('');
   const [password1, setPassword1] = useState('');
   const [password2, setPassword2] = useState('');
@@ -19,6 +21,8 @@ const Signup = () => {
     e.preventDefault();
 
     const user = {
+      firstName: firstName,
+      lastName: lastName,
       email: email,
       password1: password1,
       password2: password2
@@ -38,6 +42,8 @@ const Signup = () => {
           localStorage.setItem('token', data.key);
           window.location.replace('http://localhost:3000/dashboard');
         } else {
+          setFirst('');
+          setLast('');
           setEmail('');
           setPassword1('');
           setPassword2('');
@@ -52,6 +58,24 @@ const Signup = () => {
       {loading === false && <h1>Signup</h1>}
       {errors === true && <h2>Cannot signup with provided credentials</h2>}
       <form onSubmit={onSubmit}>
+        <label htmlFor='firstName'>First Name:</label> <br />
+        <input
+          name='firstName'
+          type='firstName'
+          value={firstName}
+          onChange={e => setFirst(e.target.value)}
+          required
+        />{' '}
+        <br />
+        <label htmlFor='lastName'>Last Name:</label> <br />
+        <input
+          name='lastName'
+          type='lastName'
+          value={lastName}
+          onChange={e => setLast(e.target.value)}
+          required
+        />{' '}
+        <br />
         <label htmlFor='email'>Email address:</label> <br />
         <input
           name='email'
