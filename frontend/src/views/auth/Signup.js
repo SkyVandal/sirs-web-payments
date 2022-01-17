@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const Signup = () => {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password1, setPassword1] = useState('');
   const [password2, setPassword2] = useState('');
@@ -19,6 +20,7 @@ const Signup = () => {
     e.preventDefault();
 
     const user = {
+      username: username,
       email: email,
       password1: password1,
       password2: password2
@@ -52,6 +54,15 @@ const Signup = () => {
       {loading === false && <h1>Signup</h1>}
       {errors === true && <h2>Cannot signup with provided credentials</h2>}
       <form onSubmit={onSubmit}>
+        <label htmlFor='username'>Username:</label> <br />
+        <input
+          name='username'
+          type='username'
+          value={username}
+          required
+          onChange={e => setUsername(e.target.value)}
+        />{' '}
+        <br />
         <label htmlFor='email'>Email address:</label> <br />
         <input
           name='email'
