@@ -42,7 +42,7 @@ class App extends Component {
 
   componentDidMount() {
     axios
-      .get("http://127.0.0.1:8000/api/items/itemslist/")
+      .get("https://127.0.0.1:8000/api/items/itemslist/")
         .then(response => {
         
           var listItems = response.data.map(c => {
