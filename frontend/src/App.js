@@ -7,6 +7,11 @@ import Logout from './views/auth/Logout';
 import {Navigation} from "./components/Navigation";
 import {Contacts} from "./components/Contacts";
 
+
+import {Elements} from '@stripe/react-stripe-js';
+import {loadStripe} from "@stripe/stripe-js/pure";
+
+
 function App() {
   return (
     <div className="App">
@@ -17,7 +22,6 @@ function App() {
           <Route path='/signup' element={<Signup/>} />
           <Route path='/logout' element={<Logout/>} />
         </Routes>
-        <Contacts />
       </Router>
     </div>
   );

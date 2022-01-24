@@ -1,4 +1,8 @@
 *.pyc
 .idea
-backend/items/migrations
 db.sqlite3
+
+users/migrations
+payments/migrations
+items/migrations
+itemsList/migrations
