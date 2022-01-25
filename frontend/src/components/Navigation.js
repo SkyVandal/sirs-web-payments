@@ -1,18 +1,39 @@
 import Navbar from 'react-bootstrap/Navbar'
-import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav'
+import { Link } from 'react-router-dom';
+import React, {Fragment, useEffect, useState} from "react";
 
-export const Navigation = (props) => {
+
+export const Navigation = () => {
+    const [isAuth, setIsAuth] = useState(false);
+
+    useEffect(() => {
+    if (localStorage.getItem('token') !== null) {
+      setIsAuth(true);
+    }
+    }, []);
+
     return (
         <Navbar sticky="top" bg="dark" variant="dark">
-            <Container>
+            {isAuth === true ? (
+            <Fragment>
             <Navbar.Brand href="#home">Navbar</Navbar.Brand>
-            <Nav className="ml-auto">
-                <Nav.Link href="#home">Home</Nav.Link>
-                <Nav.Link href="/login">Sign In</Nav.Link>
-                <Nav.Link href="/register">Register</Nav.Link>
-            </Nav>
-        </Container>
-  </Navbar>
+                <Nav className="ms-auto">
+                    <Nav.Link href="#home">Home</Nav.Link>
+                    <Link to='/dashboard'>Dashboard</Link>
+                    <Link to='/logout'>Logout</Link>
+                </Nav>
+            </Fragment>
+            ) : (
+            <Fragment>
+                <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+                <Nav className="ms-auto">
+                    <Nav.Link href="#home">Home</Nav.Link>
+                    <Link to="/login">Login</Link>
+                    <Link to="/signup">Signup</Link>
+                </Nav>
+            </Fragment>
+            )}
+        </Navbar>
   )
 }

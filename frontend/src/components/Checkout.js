@@ -1,6 +1,8 @@
 import React, {useEffect} from "react";
+import '../style/Checkout.css'
+import {API_URL} from "../config";
 
-export const HomePage = (props) => {
+export const Checkout = (props) => {
   useEffect(() => {
     // Check to see if this is a redirect back from Checkout
     const query = new URLSearchParams(window.location.search);
@@ -27,9 +29,9 @@ export const HomePage = (props) => {
         <h5>$20.00</h5>
         </div>
       </div>
-      <form action="api/stripe/create-checkout-session" method="POST">
-        <button type="submit">
-          Checkout
+      <form action="http://localhost:8000/api/v1/stripe/create-checkout-session" method="POST">
+        <button className="buyButton" type="submit">
+          Buy
         </button>
       </form>
     </section>
