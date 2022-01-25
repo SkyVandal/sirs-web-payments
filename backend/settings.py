@@ -147,6 +147,8 @@ CORS_ALLOWED_ORIGINS = [
 'http://localhost:3000'
 ]
 
+SITE_URL = 'http://localhost:3000'
+
 # Django All Auth config. Add all of this.
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend", "allauth.account.auth_backends.AuthenticationBackend",)
