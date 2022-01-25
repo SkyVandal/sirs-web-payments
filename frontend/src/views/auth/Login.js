@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
+function messageDigest(message) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(message);
+  const hashArray = crypto.subtle.digest('SHA-256', data); // digested message byte array
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); // convert bytes to hex string
+  return hashHex;
+}
+
+function encrypt(message, key) {
+
+}
+
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -13,13 +25,32 @@ const Login = () => {
         setLoading(false);
       }
     }, []);
+    
+    //const digest = await window.crypto.subtle.digest('SHA-256', data);
+  //const digest = await window.crypto.subtle.digest();
   
     const onSubmit = e => {
       e.preventDefault();
   
       const user = {
+        /* This will be encrypted */
         email: email,
-        password: password
+        password: password  
+        /* Security contents:
+        encrypted hashed data: Kpriv(H(data))        
+        encrypted data(w/symmetric key): K(data)
+        encrypted symmetric key(w/server pub key): Kserverpub(K)
+        */
+      };
+      var userJson = JSON.stringify(user);
+
+      // Hash message (user) and encrypt it with my priv key
+      var hashMessage = messageDigest(userJson);
+
+
+
+      const packet = {
+
       };
   
       fetch('https://127.0.0.1:8000/api/v1/users/auth/login/', {
@@ -31,6 +62,7 @@ const Login = () => {
       })
         .then(res => res.json())
         .then(data => {
+          console.log("data: ", data);
           if (data.key) {
             localStorage.clear();
             localStorage.setItem('token', data.key);

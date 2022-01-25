@@ -16,3 +16,9 @@ python manage.py runserver_plus --cert-file certificates/cert.pem --key-file cer
 (https://timonweb.com/django/https-django-development-server-ssl-certificate/)
 
 encriptar com privada do client, verificar no servidor com a publica do client.
+
+### Genarate private key
+openssl genrsa -out private-key.key
+
+### Generate public key from private key
+openssl rsa -in private-key.pem -pubout -out public-key.pem
