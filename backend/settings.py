@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount', # new
     'rest_auth.registration', # new
     'corsheaders', # new
+    'sslserver', # SSL server
+    'django_extensions', # Django extensions
 ]
 
 MIDDLEWARE = [
@@ -157,3 +159,15 @@ ACCOUNT_UNIQUE_EMAIL = True
 REST_FRAMEWORK = {    
 'DATETIME_FORMAT': "%m/%d/%Y %I:%M%P",    'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.TokenAuthentication',],
 }
+
+CORS_ORIGIN_ALLOW_ALL = True
+# HTTTP settings
+#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+#SECURE_SSL_REDIRECT = True
+#SESSION_COOKIE_SECURE = True
+#CSRF_COOKIE_SECURE = True
+
+# HSLS settings
+#SECURE_HSTS_SECONDS = 5 #seconds
+#SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+#SECURE_HSTS_PRELOAD = True

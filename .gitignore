@@ -1,4 +1,7 @@
 *.pyc
 .idea
-backend/items/migrations
 db.sqlite3
+package-lock.json
+package.json
+users/migrations
+items/migrations
