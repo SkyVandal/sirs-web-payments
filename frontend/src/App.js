@@ -8,8 +8,6 @@ import {Navigation} from "./components/Navigation";
 import {Contacts} from "./components/Contacts";
 
 
-import {Elements} from '@stripe/react-stripe-js';
-import {loadStripe} from "@stripe/stripe-js/pure";
 import {Checkout} from "./components/Checkout";
 
 

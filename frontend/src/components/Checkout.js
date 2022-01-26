@@ -29,13 +29,11 @@ export const Checkout = (props) => {
         <h5>$20.00</h5>
         </div>
       </div>
-      <form action="http://localhost:8000/api/v1/stripe/create-checkout-session" method="POST">
+      <form action="https://localhost:8000/api/v1/stripe/create-checkout-session" method="POST">
         <button className="buyButton" type="submit">
           Buy
         </button>
       </form>
     </section>
   );
-
-
 };
