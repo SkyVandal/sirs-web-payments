@@ -1,10 +1,7 @@
 {
   "dependencies": {
-<<<<<<< HEAD
     "axios": "^0.25.0",
-    "bootstrap": "^5.1.3"
-=======
-    "axios": "^0.25.0"
->>>>>>> bruno
+    "bootstrap": "^5.1.3",
+    "react-bootstrap": "^2.1.1"
   }
 }

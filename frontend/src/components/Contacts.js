@@ -1,5 +1,4 @@
 import React from "react"
-import {Footer} from "antd/es/layout/layout";
 
 export const Contacts = () => {
     return (
