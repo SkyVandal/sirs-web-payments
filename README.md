@@ -22,3 +22,5 @@ openssl genrsa -out private-key.key
 
 ### Generate public key from private key
 openssl rsa -in private-key.pem -pubout -out public-key.pem
+
+ conda install -c anaconda pycrypto 
