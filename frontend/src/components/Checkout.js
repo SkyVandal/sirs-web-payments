@@ -36,6 +36,4 @@ export const Checkout = (props) => {
       </form>
     </section>
   );
-
-
 };

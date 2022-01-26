@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount', # new
     'rest_auth.registration', # new
     'corsheaders', # new
-    'sslserver', # SSL server
+    #'sslserver', # SSL server
     'django_extensions', # Django extensions
     'payments',
 ]
