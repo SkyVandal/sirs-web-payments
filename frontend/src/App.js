@@ -1,83 +1,30 @@
 import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Login from './views/auth/Login'; 
+import Login from './views/auth/Login';
 import Signup from './views/auth/Signup';
 import Logout from './views/auth/Logout';
-import ItemsList from './components/ItemsList';
-import Singleitem from './components/Singleitem';
-import axios from "axios";
-import React, { useState, useEffect, setState, Component } from 'react';
+import {Navigation} from "./components/Navigation";
+import {Contacts} from "./components/Contacts";
 
 
-
-class App extends Component {
-  
-  state = {
-    items: []
-  };
-
-  /*useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/api/items/itemslist/")
-        .then(response => {
-        
-          var listItems = response.data.map(c => {
-            return {
-              id: c.id,
-              title: c.title,
-              description: c.description,
-              price: c.price
-            };
-          });
-        
-          const newState = Object.assign({}, state,
-            { items: listItems }
-          );
-          this.setState(newState);
-        })
-        .catch(error => console.log(error));
-  })*/
-
-  componentDidMount() {
-    axios
-      .get("https://127.0.0.1:8000/api/items/itemslist/")
-        .then(response => {
-        
-          var listItems = response.data.map(c => {
-            return {
-              key: c.id,
-              title: c.title,
-              description: c.description,
-              price: c.price
-            };
-          });
-        
-          const newState = Object.assign({}, this.state,
-            { items: listItems }
-          );
-          this.setState(newState);
-        })
-        .catch(error => console.log(error));
-  }
+import {Checkout} from "./components/Checkout";
 
 
-  render() {
-    return (
-      <div className="App">
-        <Router>
-          <Navbar />
-          <ItemsList items={this.state.items} />
-          <Routes>
-            <Route path='/login' element={<Login />} />
-            <Route path='/signup' element={<Signup />} />
-            <Route path='/logout' element={<Logout />} />
-          </Routes>
-        </Router>
-      </div>
-    );
-  }
+function App() {
+  return (
+    <div className="App">
+      <Router>
+        <Navigation />
+        <Checkout />
+        <Routes>
+          <Route path='/login' element={<Login/>} />
+          <Route path='/signup' element={<Signup/>} />
+          <Route path='/logout' element={<Logout/>} />
+        </Routes>
+      </Router>
+    </div>
+  );
 }
 
 export default App;

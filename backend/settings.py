@@ -25,6 +25,9 @@ SECRET_KEY = 'django-insecure-_*_p^j(6ox%w^m*++2d_33o+&ue3oa=ek&nk@o0--gm215fcza
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51KIxh6L9ToWAnoXm9YTkKSc2l0TotDzQNF10sPFbOuLZ7KXfcKkTRoAKgZ2mhztgz3W1Q3FoY0Z6YC5xSH3Y4YmA00ZW1mXdmG'
+STRIPE_SECRET_KEY = 'sk_test_51KIxh6L9ToWAnoXmFiqHrT6mqO5FC71Th0UfrYpijVZbR1vTS4DXd9kHHBQFKsohc0QlIqWmN5mciT6GsSRI5I2q00DNJLZYHG'
+
 ALLOWED_HOSTS = []
 
 
@@ -50,8 +53,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount', # new
     'rest_auth.registration', # new
     'corsheaders', # new
-    'sslserver', # SSL server
+    #'sslserver', # SSL server
     'django_extensions', # Django extensions
+    'payments',
 ]
 
 MIDDLEWARE = [
@@ -145,6 +149,8 @@ AUTH_USER_MODEL = 'users.User'
 CORS_ALLOWED_ORIGINS = [    
 'http://localhost:3000'
 ]
+
+SITE_URL = 'http://localhost:3000'
 
 # Django All Auth config. Add all of this.
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
