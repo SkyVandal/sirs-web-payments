@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+//import { Buffer } from 'buffer';
 
 function str2ab(str) {
   const buf = new ArrayBuffer(str.length);
@@ -119,15 +120,11 @@ const Login = () => {
     e.preventDefault();
   
     const user = {
-        /* This will be encrypted */
       email: email,
       password: password  
-        /* Security contents:
-        encrypted hashed data: Kpriv(H(data))        
-        encrypted data(w/symmetric key): K(data)
-        encrypted symmetric key(w/server pub key): Kserverpub(K)
-        */
+     
     };
+    
     var userJson = JSON.stringify(user);
 
       // Hash message (user info)
@@ -148,12 +145,26 @@ const Login = () => {
     //console.log("cryptoData:", encryptedData);
     var encryptedKey = await encryptKey(publicServerKey, symmetricKey);
     //console.log("cryptoKey:", encryptedKey);
-    //console.log("base64: ", btoa(encryptedKey));
-  
+
+
+    var base64js = require('base64-js');
+    var b64Hash = base64js.fromByteArray(new Uint8Array(encryptedHash));
+    var b64Data = base64js.fromByteArray(new Uint8Array(encryptedData));
+    var b64Key = base64js.fromByteArray(new Uint8Array(encryptedKey));
+
+    console.log("hash64: ", b64Hash);
+    console.log("data64: ", b64Data);
+    console.log("64key: ", b64Key);
+
+    /* Security contents:
+      * encrypted hashed data: Kserverpub(H(data))        
+      * encrypted data(w/symmetric key): K(data)
+      * encrypted symmetric key(w/server pub key): Kserverpub(K)
+    */
     const packet = {
-      cryptoHash: btoa(encryptedHash),
-      cryptoData: btoa(encryptedData),
-      cryptoKkey: btoa(encryptedKey)
+      cryptoHash: b64Hash,
+      cryptoData: b64Data,
+      cryptoKkey: b64Key
     };
   
     fetch('https://127.0.0.1:8000/api/v1/users/auth/login/', {
