@@ -165,7 +165,7 @@ const Login = () => {
     })
       .then(res => res.json())
       .then(data => {
-        //console.log("data: ", data);
+        console.log("data: ", data);
         if (data.key) {
           localStorage.clear();
           localStorage.setItem('token', data.key);
