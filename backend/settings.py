@@ -154,7 +154,10 @@ SITE_URL = 'http://localhost:3000'
 
 # Django All Auth config. Add all of this.
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend", "allauth.account.auth_backends.AuthenticationBackend",)
+AUTHENTICATION_BACKENDS = ("custom.backend.CustomAuthentication",
+                           "django.contrib.auth.backends.ModelBackend",
+                           "allauth.account.auth_backends.AuthenticationBackend"
+                           )
 SITE_ID = 1 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
@@ -177,3 +180,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 #SECURE_HSTS_SECONDS = 5 #seconds
 #SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 #SECURE_HSTS_PRELOAD = True
+
+SERVER_PRIVATE_KEY = 'certificates/keys/private-server.key'
+CLIENT_PUBLIC_KEY = 'certificates/keys/public-client-key.pem'
