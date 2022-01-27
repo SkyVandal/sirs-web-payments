@@ -152,9 +152,9 @@ const Login = () => {
     var b64Data = base64js.fromByteArray(new Uint8Array(encryptedData));
     var b64Key = base64js.fromByteArray(new Uint8Array(encryptedKey));
 
-    console.log("hash64: ", b64Hash);
-    console.log("data64: ", b64Data);
-    console.log("64key: ", b64Key);
+    //console.log("hash64: ", b64Hash);
+    //console.log("data64: ", b64Data);
+    //console.log("64key: ", b64Key);
 
     /* Security contents:
       * encrypted hashed data: Kserverpub(H(data))        
