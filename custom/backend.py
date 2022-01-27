@@ -17,6 +17,7 @@ class CustomAuthentication(BaseBackend):
     rsa_client_public_key = RSA.importKey(client_pub_key)
 
     def authenticate(self, request=None, email=None, password=None, **kwargs):
+        print(request)
         if request is not None:
             return User.objects.get(email=email) if self.user_is_auth(request) else None
         print("Deu merda, debug")
@@ -30,7 +31,7 @@ class CustomAuthentication(BaseBackend):
 
     def user_is_auth(self, request):
         if request is None:
-            return True #careful
+            return False #careful
         print(request)
         data_dict = json.load(request)
 

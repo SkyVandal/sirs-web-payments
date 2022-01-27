@@ -154,7 +154,7 @@ SITE_URL = 'http://localhost:3000'
 
 # Django All Auth config. Add all of this.
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-AUTHENTICATION_BACKENDS = (#"custom.backend.CustomAuthentication",
+AUTHENTICATION_BACKENDS = ("custom.backend.CustomAuthentication",
                            "django.contrib.auth.backends.ModelBackend",
                            "allauth.account.auth_backends.AuthenticationBackend"
                            )
@@ -169,7 +169,7 @@ REST_FRAMEWORK = {
 'DATETIME_FORMAT': "%m/%d/%Y %I:%M%P",    'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.TokenAuthentication',],
 }
 
-CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW_ALL = True
 # HTTTP settings
 #SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 #SECURE_SSL_REDIRECT = True
