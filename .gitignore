@@ -10,3 +10,5 @@ users/migrations
 payments/migrations
 itemsList/migrations
 node_modules/
+
+*.sqlite3

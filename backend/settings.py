@@ -154,7 +154,11 @@ SITE_URL = 'http://localhost:3000'
 
 # Django All Auth config. Add all of this.
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend", "allauth.account.auth_backends.AuthenticationBackend",)
+AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend",
+                           "allauth.account.auth_backends.AuthenticationBackend"
+                           #"custom.backend.CustomAuthentication",
+]
+
 SITE_ID = 1 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
@@ -166,7 +170,6 @@ REST_FRAMEWORK = {
 'DATETIME_FORMAT': "%m/%d/%Y %I:%M%P",    'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.TokenAuthentication',],
 }
 
-CORS_ORIGIN_ALLOW_ALL = True
 # HTTTP settings
 #SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 #SECURE_SSL_REDIRECT = True
@@ -177,3 +180,16 @@ CORS_ORIGIN_ALLOW_ALL = True
 #SECURE_HSTS_SECONDS = 5 #seconds
 #SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 #SECURE_HSTS_PRELOAD = True
+
+SERVER_PRIVATE_KEY = 'certificates/keys/private-server.key'
+CLIENT_PUBLIC_KEY = 'certificates/keys/public-client-key.pem'
+
+
+#CORS settings
+CORS_ORIGIN_ALLOW_ALL = True
+#CORS_ORIGIN_WHITELIST = [
+#'https://localhost',
+#'https://127.0.0.1:3000',
+#'https://127.0.0.1:3000/signup',
+#'https://localhost:3000/signup',
+#]
