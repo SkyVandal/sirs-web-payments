@@ -11,7 +11,7 @@ const Signup = () => {
 
   useEffect(() => {
     if (localStorage.getItem('token') !== null) {
-      window.location.replace('https://localhost:3000/dashboard');
+      window.location.replace('https://localhost:3000/dashboard/');
     } else {
       setLoading(false);
     }
@@ -40,7 +40,7 @@ const Signup = () => {
         if (data.key) {
           localStorage.clear();
           localStorage.setItem('token', data.key);
-          window.location.replace('https://localhost:3000/dashboard');
+          window.location.replace('https://localhost:3000/dashboard/');
         } else {
           setFirst('');
           setLast('');
