@@ -2,7 +2,7 @@ import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import { Link } from 'react-router-dom';
 import React, {Fragment, useEffect, useState} from "react";
-
+import "./Navigation.css"
 
 export const Navigation = () => {
     const [isAuth, setIsAuth] = useState(false);
@@ -17,20 +17,20 @@ export const Navigation = () => {
         <Navbar sticky="top" bg="dark" variant="dark">
             {isAuth === true ? (
             <Fragment>
-            <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+            <Navbar.Brand className="brand" href="#home">Shop</Navbar.Brand>
                 <Nav className="ms-auto">
-                    <Nav.Link href="#home">Home</Nav.Link>
-                    <Link to='/dashboard'>Dashboard</Link>
-                    <Link to='/logout'>Logout</Link>
+                    <Nav.Link className="link" href="#home">Home</Nav.Link>
+                    <Link className="link" to='/dashboard'>Dashboard</Link>
+                    <Link className="link" to='/logout'>Logout</Link>
                 </Nav>
             </Fragment>
             ) : (
             <Fragment>
-                <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+                <Navbar.Brand className="brand" href="#home">Shop</Navbar.Brand>
                 <Nav className="ms-auto">
-                    <Nav.Link href="#home">Home</Nav.Link>
-                    <Link to="/login">Login</Link>
-                    <Link to="/signup">Signup</Link>
+                    <Nav.Link className="link" href="#home">Home</Nav.Link>
+                    <Link className="link" to="/login">Login</Link>
+                    <Link className="link" to="/signup">Signup</Link>
                 </Nav>
             </Fragment>
             )}
