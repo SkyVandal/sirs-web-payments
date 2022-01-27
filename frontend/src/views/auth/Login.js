@@ -166,8 +166,9 @@ const Login = () => {
       cryptoData: b64Data,
       cryptoKkey: b64Key
     };
-  
-    fetch('https://127.0.0.1:8000/api/v1/users/auth/login/', {
+    
+    //https://127.0.0.1:8000/api/v1/users/auth/login/
+    fetch('https://127.0.0.1:8000/api/v1/users/auth/custom/login/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
