@@ -1,7 +1,6 @@
 import email
 from email import message
 import json
-from django.forms import ValidationError
 from django.shortcuts import render
 from .models import User
 from django.contrib.auth import authenticate, login
@@ -20,75 +19,54 @@ from rest_framework.status import (
     HTTP_200_OK
 )
 
-# Test api
-"""
-@api_view(["GET"])
-@permission_classes([IsAuthenticated, ])
-def sample_api(request):
-    data = {'sample_data': 123}
-    return Response(data, status=HTTP_200_OK)
-"""
+
+import rsa
+
 
 @api_view(["POST"])
 @permission_classes([AllowAny,])
 def login_user(request):
+    private_key = RSA.import_key(open(settings.SERVER_PRIVATE_KEY, "r").read())
+    client_public_key = RSA.import_key(open(settings.CLIENT_PUBLIC_KEY, "r").read())
 
-    message = {
-        "email": "alexandre@gmail.com",
-        "password": "password"
-    }
-    sentence = "Hello World!"
-    messageJson = json.loads(json.dumps(message))
-    #Generate key pair
-    keyPair = RSA.generate(3072)
-    #pub key
-    pub_key = keyPair.publickey()
-    print(f"Public key:  (n={hex(pub_key.n)}, e={hex(pub_key.e)})")
-    pubKeyPEM = pub_key.exportKey()
-    print(pubKeyPEM.decode('ascii'))
-    #private key
-    print(f"Private key: (n={hex(pub_key.n)}, d={hex(keyPair.d)})")
-    privKeyPEM = keyPair.exportKey()
-    print(privKeyPEM.decode('ascii'))
-    #encrypt a message
-    encryptor = PKCS1_OAEP.new(pub_key)
-    #cipherTextJson = encryptor.encrypt(messageJson)
-    cipherTextSentence = encryptor.encrypt(sentence)
-    #convert to base 64
-    #cipherJson_bytes = cipherTextJson.encode('ascii')
-    ###cipherSentence_bytes = cipherTextSentence.encode('ascii')
-    #json_b64_bytes = base64.b64encode(cipherJson_bytes)
-    ###sentence_b64_bytes = base64.b64encode(cipherSentence_bytes)
-    #json_b64_message = json_b64_bytes.decode('ascii')
-    ###sentence_b64_message = sentence_b64_bytes.decode('ascii')
-    #decrypt a message
-    ## first we have to decode from base 64
-    #json_base64_bytes = json_b64_message.encode('ascii')
-    ###sentence_base64_bytes = sentence_b64_message.encode('ascii')
-    #json_decoded_bytes = base64.b64decode(json_base64_bytes)
-    ###sentence_decoded_bytes = base64.b64decode(sentence_base64_bytes)
-    #now we decript
-    #cipherJson = json_decoded_bytes.decode('ascii')
-    ###cipherSentence = sentence_decoded_bytes.decode('ascii')
-    decryptor = PKCS1_OAEP.new(keyPair)
-    #decrypted_json = decryptor.decrypt(cipherJson)
-    decrypted_sentence = decryptor.decrypt(cipherTextSentence)
-    print("sentence: " + decrypted_sentence)
+    cipher_rsa = PKCS1_v1_5.new(private_key)
 
-    #Generate symmetric AES-CBC key
+    signature_scheme = SigScheme.new(private_key)
 
-    #Encrypt data with symmetric
+    data_dict = json.load(request)
 
-    #encrypt symmetric key with publicKey
+    signature = data_dict["signature"] #signature /verify
+    crypto_data = data_dict["cryptoData"] #bytes use symmetric
+    sym_key = data_dict["cryptoKkey"] #usar privada (bytes)
+    iv = data_dict["iv"] #string
 
-    #decrypt symmetric with private key
+    #ERROR
+    sym_key_decripted = cipher_rsa.decrypt(sym_key, sentinel="encryption failed")
 
-    #decrypt data with symmetric
-    mail = request.data.get("email")
-    passw = request.data.get("password")
+    #decrypt crypto_data with symmetric key
 
-    # Opcao 1
-    
+    #verify signature
+    signer = PKCS1_v1_5.new(client_public_key)
+    digest = SHA256.new()
+    digest.update(b64decode(crypto_data))
+    #if signer.verify(digest, b64decode(signature)):
+    #    verified = True
+    #verified = False
+    data = {}
+    return Response(data)
+
+
+def export_key(private_key):
+    with open(settings.SERVER_PRIVATE_KEY, "wb") as file:
+        file.write(private_key.exportKey('PEM'))
+        file.close()
+    public_key = private_key.publickey()
+    with open(settings.SERVER_PUBLIC_KEY, "wb") as f:
+        f.write(public_key.exportKey('PEM'))
+        f.close()
+
+
+
     try:
         Account = User.objects.get(email=mail)
     except BaseException as e:
@@ -109,21 +87,3 @@ def login_user(request):
             raise ValidationError({"400":f'Account not active'})
     else:
         raise ValidationError({"400": f'Account does not exist'})
-    
-    """
-    # OPCAO 2
-    #user = authenticate(email=emaildesencriptado, password=passdesencriptada)
-    print("email: " + mail + "\npassword: " + passw + "\n")
-    user = authenticate(email=mail, password=passw)
-    print(user)
-    if user is not None:
-        # Authenticated credentials
-        # Generate token
-        print("USER IS VALID")
-        token = Token.objects.get_or_create(user=user)[0].key
-        print(token)
-        return Response({"token": token}, status=HTTP_200_OK)
-    else:
-        print("USER NOT VALID")
-        raise ValidationError({"error": "Incorrect Login credentials"})
-    """

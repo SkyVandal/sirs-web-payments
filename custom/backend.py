@@ -17,6 +17,7 @@ class CustomAuthentication(BaseBackend):
     rsa_client_public_key = RSA.importKey(client_pub_key)
 
     def authenticate(self, request=None, email=None, password=None, **kwargs):
+        print(request)
         if request is not None:
             return User.objects.get(email=email) if self.user_is_auth(request) else None
         print("Deu merda, debug")
@@ -38,14 +39,15 @@ class CustomAuthentication(BaseBackend):
         data = data_dict["cryptoData"]
         sym_key = data_dict["cryptoKkey"]
 
-        #raw_hash_data = b64decode(data_hash)
-        decrypted_hash = self.rsa_client_public_key.decrypt(data_hash)
+        raw_hash_data = b64decode(data_hash)
+        decrypted_hash = self.rsa_private_key.decrypt(raw_hash_data)
 
-        #raw_key_data = b64decode(sym_key)
-        decrypted_key = self.rsa_private_key.decrypt(sym_key)
+        raw_key_data = b64decode(sym_key)
+        decrypted_key = self.rsa_private_key.decrypt(raw_key_data)
 
+        raw_data = b64decode(data)
         aes = AES.new(decrypted_key, AES.MODE_CBC)
-        decrypted_data = aes.decrypt(data)
+        decrypted_data = aes.decrypt(raw_data)
 
         new_hash_data = SHA256.new(decrypted_data)
 

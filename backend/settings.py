@@ -182,9 +182,9 @@ REST_FRAMEWORK = {
 #SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 #SECURE_HSTS_PRELOAD = True
 
-SERVER_PRIVATE_KEY = 'certificates/keys/private-server.key'
-CLIENT_PUBLIC_KEY = 'certificates/keys/public-client-key.pem'
-
+SERVER_PRIVATE_KEY = 'certificates/keys/private-key.pem'
+SERVER_PUBLIC_KEY = 'certificates/keys/public-key.pem'
+CLIENT_PUBLIC_KEY = 'certificates/keys/public-client.pem'
 
 #CORS settings
 CORS_ORIGIN_ALLOW_ALL = True

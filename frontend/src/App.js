@@ -9,6 +9,7 @@ import {Contacts} from "./components/Contacts";
 
 
 import {Checkout} from "./components/Checkout";
+import {HomePage} from "./components/HomePage";
 
 
 function App() {
@@ -16,12 +17,13 @@ function App() {
     <div className="App">
       <Router>
         <Navigation />
-        <Checkout />
         <Routes>
           <Route path='/login' element={<Login/>} />
           <Route path='/signup' element={<Signup/>} />
           <Route path='/logout' element={<Logout/>} />
         </Routes>
+        <HomePage />
+        <Contacts />
       </Router>
     </div>
   );

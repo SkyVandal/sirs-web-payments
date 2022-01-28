@@ -208,6 +208,8 @@ const Login = () => {
       cryptoKkey: encryptedKey,
       //iv: initVector.toString('ascii')
     };
+
+    console.log(encryptedKey);
     
     //https://127.0.0.1:8000/api/v1/users/auth/custom/login/
     fetch('https://127.0.0.1:8000/api/v1/users/auth/login/', {
@@ -219,7 +221,7 @@ const Login = () => {
     })
       .then(res => res.json())
       .then(data => {
-        //console.log("data: ", data);
+        console.log("data: ", data);
         if (data.key) {
           localStorage.clear();
           localStorage.setItem('token', data.key);
