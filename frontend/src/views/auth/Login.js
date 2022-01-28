@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
-//import { Buffer } from 'buffer';
+import { Buffer } from 'buffer';
+
+// Global base 64 encoder/decoder
+var base64js = require('base64-js');
+//var Buffer = require('buffer/').Buffer;
+
 
 function str2ab(str) {
   const buf = new ArrayBuffer(str.length);
@@ -41,6 +46,8 @@ async function importRSApublicKey(publicServerpem) {
   const pemFooter = "-----END PUBLIC KEY-----";
   const pemContents = publicServerpem.substring(pemHeader.length, publicServerpem.length - pemFooter.length);
   const binaryDerString = window.atob(pemContents);
+  //window.atob()
+  //const binaryDerString = base64js.toByteArray(pemContents).toString("base64");
   const arrayBukkerKey = str2ab(binaryDerString);
 
   return await window.crypto.subtle.importKey(
@@ -147,11 +154,17 @@ const Login = () => {
     //console.log("cryptoKey:", encryptedKey);
 
 
-    var base64js = require('base64-js');
-    var b64Hash = base64js.fromByteArray(new Uint8Array(encryptedHash));
-    var b64Data = base64js.fromByteArray(new Uint8Array(encryptedData));
-    var b64Key = base64js.fromByteArray(new Uint8Array(encryptedKey));
+    //var b64Hash = base64js.fromByteArray(new Uint8Array(encryptedHash));
+    //var b64Data = base64js.fromByteArray(new Uint8Array(encryptedData));
+    //var b64Key = base64js.fromByteArray(new Uint8Array(encryptedKey));
 
+    var b64Hash = Buffer.from(encryptedHash).toString('base64');
+    var b64Data = Buffer.from(encryptedData).toString('base64');
+    var b64Key = Buffer.from(encryptedKey).toString('base64');
+
+    //var b64Hashold = base64js.fromByteArray(new Uint8Array(encryptedHash));
+    //console.log("b64HashBuf:", b64Hash);
+    //console.log("b64Hashlibrary", b64Hashold);
     //console.log("hash64: ", b64Hash);
     //console.log("data64: ", b64Data);
     //console.log("64key: ", b64Key);
