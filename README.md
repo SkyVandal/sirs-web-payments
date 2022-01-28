@@ -23,6 +23,10 @@ encriptar com privada do client, verificar no servidor com a publica do client.
 ### Generate public key from private key
     openssl rsa -in private-key.pem -pubout -out public-key.pem
 
-conda install -c anaconda pycrypto 
+ conda install -c conda-forge pycryptodome 
+
+ conda install -c conda-forge rsa 
 
 npm install base64-js
+
+npm install buffer

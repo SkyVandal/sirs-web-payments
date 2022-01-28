@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-//import { Buffer } from 'buffer';
+import { Buffer } from 'buffer';
 
 function str2ab(str) {
   const buf = new ArrayBuffer(str.length);
@@ -97,15 +97,15 @@ const Login = () => {
     const [loading, setLoading] = useState(true);
   
     var publicServerpem = `-----BEGIN PUBLIC KEY-----
-      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwynl7PXKTZvbAQGHxE2B
-      dpL5YC+Fa5PCdXd488CY8QouhhgkupLdzivRy6GoCTovw1JV5ZO0CjLGKwCsGpPm
-      dQM7JVfgrHCRozDMR4GCBwvdVlbl+hlG48CPdqfBZ5B8oKMXyQoxMKGlD3Wty7gK
-      qrIHXalgKNVMSztR1wDQgG99b2gnQeTBeAucSwRK+E9oVTRNM6F1py2lzlR29i15
-      YUMUeA26DF++L1hvfGMwL/lWrysRQqLQsTBKVpqdfZ9sFKJ0CrfhzpjgcvSZgRWW
-      d6RVs/vfflfv+R61/+OlBgYkiQfN+WC0HQAahT2ndYef9Tk9gvGUbdgZsuKOMg4X
-      xwIDAQAB
-      -----END PUBLIC KEY-----`;
-  
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5b0XrVaeiEI797RetipN
+m/gjMmKK5E8ywQNZP100WYq5mz4gf9EmJFnt3LSZjRkRtD+jOuNuSxRthrbRr5Tn
+HgwuAfodFvI10vKO+ObNBLfrF1Hy1xOl5WT9+9EkKdUv9RH/biqrIr3bXBpOY2jv
+Ps5JyUeXzrcTEJQ+4YYZK/laqT54H/Mu+SrN/jPryY7zUzjzHUcO5xXHo5LS/pMc
+XKNRglAOyZvFUn7ciq2SGWDOV54lj1EwaBbyVdIgWCxsUE+p3iMSUdB0VcRqRNyo
+Yq3PyPhglST4YVg5qGH2hZZLo71o0BEz4pliJPppl7s530YkCaMZYxG7v02xVfA9
+AwIDAQAB
+-----END PUBLIC KEY-----`;
+
   useEffect(() => {
       if (localStorage.getItem('token') !== null) {
         window.location.replace('https://localhost:3000/dashboard');
@@ -129,32 +129,32 @@ const Login = () => {
 
       // Hash message (user info)
     var digest = await messageDigest(userJson);
-    //console.log("digest:", digest);
+    console.log("digest:", digest);
 
     let publicServerKey = await importRSApublicKey(publicServerpem);
-    //console.log("key:", publicServerKey);
+    console.log("key:", publicServerKey);
     
       // encrypt hash
     var encryptedHash = await encryptRSA(digest, publicServerKey);
-    //console.log("cryptoHash:", encryptedHash)
+    console.log("cryptoHash:", encryptedHash)
     // Generate symmetric key
     var symmetricKey = await generateSymmetricKey();
-    //console.log("symmetric key:", symmetricKey);
+    console.log("symmetric key:", symmetricKey);
 
     var encryptedData = await encryptAES(userJson, symmetricKey);
-    //console.log("cryptoData:", encryptedData);
+    console.log("cryptoData:", encryptedData);
     var encryptedKey = await encryptKey(publicServerKey, symmetricKey);
-    //console.log("cryptoKey:", encryptedKey);
+    console.log("cryptoKey:", encryptedKey);
 
 
     var base64js = require('base64-js');
-    var b64Hash = base64js.fromByteArray(new Uint8Array(encryptedHash));
-    var b64Data = base64js.fromByteArray(new Uint8Array(encryptedData));
-    var b64Key = base64js.fromByteArray(new Uint8Array(encryptedKey));
+    //var b64Hash = base64js.fromByteArray(new Uint8Array(encryptedHash));
+    //var b64Data = base64js.fromByteArray(new Uint8Array(encryptedData));
+    //var b64Key = base64js.fromByteArray(new Uint8Array(encryptedKey));
 
-    //console.log("hash64: ", b64Hash);
-    //console.log("data64: ", b64Data);
-    //console.log("64key: ", b64Key);
+    var b64Hash = Buffer.from(encryptedHash).toString('base64');
+    var b64Data = Buffer.from(encryptedData).toString('base64');
+    var b64Key = Buffer.from(encryptedKey).toString('base64');
 
     /* Security contents:
       * encrypted hashed data: Kserverpub(H(data))        
@@ -166,6 +166,8 @@ const Login = () => {
       cryptoData: b64Data,
       cryptoKkey: b64Key
     };
+
+    console.log(encryptedKey);
     
     //https://127.0.0.1:8000/api/v1/users/auth/login/
     fetch('https://127.0.0.1:8000/api/v1/users/auth/custom/login/', {
