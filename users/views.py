@@ -2,6 +2,8 @@ import email
 from email import message
 import json
 from django.shortcuts import render
+from rest_framework.exceptions import ValidationError
+
 from .models import User
 from django.contrib.auth import authenticate, login
 
@@ -66,7 +68,7 @@ def export_key(private_key):
         f.close()
 
 
-
+def generateToken(mail, passw, request):
     try:
         Account = User.objects.get(email=mail)
     except BaseException as e:
@@ -76,7 +78,7 @@ def export_key(private_key):
     token = Token.objects.get_or_create(user=Account)[0].key
     print(token)
 
-    if not passw==Account.password:
+    if not passw == Account.password:
         raise ValidationError({"message": "Incorrect Login credentials"})
     
     if Account:
@@ -87,3 +89,4 @@ def export_key(private_key):
             raise ValidationError({"400":f'Account not active'})
     else:
         raise ValidationError({"400": f'Account does not exist'})
+    
